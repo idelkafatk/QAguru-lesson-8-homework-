@@ -1,3 +1,5 @@
+
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -13,6 +15,12 @@ import static com.codeborne.selenide.Selenide.*;
 
 @DisplayName("Параметризованные тесты")
 public class GitRepositoriesTest {
+
+    @BeforeEach
+    public void openGit() {
+        open("https://github.com");
+    }
+
     @ValueSource(strings = {
             "QAguru-lesson-6-homework",
             "QAguru-lesson-7-homework-",
@@ -22,7 +30,6 @@ public class GitRepositoriesTest {
     @DisplayName("Проверка репозиториев с помощью аннотации ValueSource")
     @ParameterizedTest(name = "Проверяем репозиторий {0}")
     void checkGitRepositories(String repository) {
-        open("https://github.com");
         $("[data-test-selector=nav-search-input]").setValue(repository).pressEnter();
         $(byText(repository)).should(exist);
     }
@@ -38,7 +45,6 @@ public class GitRepositoriesTest {
     @DisplayName("Проверка репозиториев c помощью аннотации MethodSource")
     @ParameterizedTest(name = "Проверяем количество репозиториев пользователя {0}")
     void checkGitUserRepositoriesCountWithMethodSource(String userName, String count) {
-        open("https://github.com");
         $("[data-test-selector=nav-search-input]").setValue(userName).pressEnter();
         $(byText("Users")).click();
         sleep(2000);
@@ -56,7 +62,6 @@ public class GitRepositoriesTest {
     @DisplayName("Проверка репозиториев c помощью аннотации CsvSource")
     @ParameterizedTest(name = "Проверяем количество репозиториев пользователя {0}")
     void checkGitUserRepositoriesCountWithCsvSource(String userName, String count) {
-        open("https://github.com");
         $("[data-test-selector=nav-search-input]").setValue(userName).pressEnter();
         $(byText("Users")).click();
         sleep(2000);
